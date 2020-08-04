@@ -11,16 +11,21 @@ app.post('/agregar/sensor',function(req,res){
         }
         var sensores = JSON.parse(data)
         sensores.sensores.push(newSensor)
-        sensores.sensores.sort(function(a,b){
-            return a - b;
-        });
-        // console.log(sensores)
-        fs.writeFile(`./files/${body.archivo}.txt`,sensores,'utf8',function(err,results){
+        var str_sensores = JSON.stringify(sensores)
+        // var sensores_sort = sensores.sensores.sort(function(a,b){
+        //     return a - b;
+        // });
+        fs.writeFile(`./files/${body.archivo}.txt`,str_sensores,'utf8',function(err,results){
             if(err) return console.log(err)
-            console.log(`Sensor ${body.ip} agregado en ${body.planta}`)
-            return res.status(200).json({ok:true,results})
+            return res.status(200).json({ok:true,str_sensores,message:`Sensor ${body.ip} agregado en ${body.planta}`})
         })
     })
+})
+
+app.delete('/remover/sensor/:archivo/:ip',function(req,res){
+    var params = req.params;
+    // console.log(params)
+    return res.status(200).json({ok:true,params})
 })
 
 module.exports = app;
