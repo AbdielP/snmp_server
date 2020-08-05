@@ -17,15 +17,26 @@ app.post('/agregar/sensor',function(req,res){
         // });
         fs.writeFile(`./files/${body.archivo}.txt`,str_sensores,'utf8',function(err,results){
             if(err) return console.log(err)
-            return res.status(200).json({ok:true,str_sensores,message:`Sensor ${body.ip} agregado en ${body.planta}`})
+            return res.status(200).json({ok:true,sensores,message:`Sensor ${body.ip} agregado en ${body.planta}`})
         })
     })
 })
 
 app.delete('/remover/sensor/:archivo/:ip',function(req,res){
     var params = req.params;
-    // console.log(params)
-    return res.status(200).json({ok:true,params})
+    var obj = {}
+    fs.readFile(`./files/${params.archivo}.txt`,'utf8',function(err,data){
+        if(err) return console.log(err)
+        var sensoresx = JSON.parse(data)
+        var sensores = sensoresx.sensores.filter(obj => obj.ip != params.ip)
+        obj = {sensores};
+        var obj_str = JSON.stringify(obj)
+
+        fs.writeFile(`./files/${params.archivo}.txt`,obj_str,'utf8',function(err,results){
+            if(err) return console.log(err)
+            return res.status(200).json({ok:true,obj})
+        })
+    })
 })
 
 module.exports = app;
