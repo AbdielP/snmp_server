@@ -11,9 +11,7 @@ app.post('/agregar/sensor',function(req,res){
         }
         var sensores = JSON.parse(data)
         var filter = sensores.sensores.filter(obj => obj.ip === newSensor.ip)
-        console.log(filter)
         if(filter != ""){
-            console.log('Es diferente de []')
             return res.status(500).json({ok:false,message:`Sensor ${body.ip} ya existe.`})
         }
         sensores.sensores.push(newSensor)
