@@ -9,7 +9,6 @@ app.use(function(req, res, next) {
     next();
 });
 require('./config/config');
-// require('./config/sensoresdb');
 //Middlewares
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
